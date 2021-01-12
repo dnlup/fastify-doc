@@ -3,6 +3,7 @@
 [![npm version](https://badge.fury.io/js/%40dnlup%2Ffastify-doc.svg)](https://badge.fury.io/js/%40dnlup%2Ffastify-doc)
 ![Tests](https://github.com/dnlup/fastify-traps/workflows/Tests/badge.svg)
 [![codecov](https://codecov.io/gh/dnlup/fastify-doc/branch/next/graph/badge.svg?token=EX89KNVVSY)](https://codecov.io/gh/dnlup/fastify-doc)
+[![Known Vulnerabilities](https://snyk.io/test/github/dnlup/fastify-doc/badge.svg?targetFile=package.json)](https://snyk.io/test/github/dnlup/fastify-doc?targetFile=package.json)
 
 > A Fastify plugin for sampling process metrics.
 
