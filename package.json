@@ -1,0 +1,70 @@
+{
+  "name": "@dnlup/fastify-doc",
+  "version": "1.0.0",
+  "description": "A Fastify plugin for sampling process metrics.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "doc": "markdown-toc -i README.md",
+    "lint": "standard --fix | snazzy",
+    "test": "tap test.js",
+    "test:ci": "npm run test -- --cov --coverage-report=lcovonly",
+    "test:coverage": "npm test -- --coverage-report=html",
+    "prerelease": "npm cit",
+    "release": "HUSKY_SKIP_HOOKS=1 standard-version",
+    "postrelease": "npm run push && npm publish",
+    "prenext": "npm cit",
+    "next": "HUSKY_SKIP_HOOKS=1 standard-version --prerelease",
+    "postnext": "npm run push && npm publish --tag next",
+    "push": "git push origin --follow-tags `git rev-parse --abbrev-ref HEAD`"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dnlup/fastify-doc.git"
+  },
+  "files": [
+    "index.js"
+  ],
+  "engines": {
+    "node": ">=10",
+    "npm": ">=6"
+  },
+  "keywords": [
+    "fastify",
+    "plugin",
+    "metrics",
+    "process",
+    "health",
+    "cpu",
+    "memory",
+    "event",
+    "loop",
+    "delay",
+    "utilization",
+    "resource",
+    "usage"
+  ],
+  "author": "Daniele Belardi <dwon.dnl@gmail.com>",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/dnlup/fastify-doc/issues"
+  },
+  "homepage": "https://github.com/dnlup/fastify-doc#readme",
+  "devDependencies": {
+    "fastify": "^3.8.0",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.5.3",
+    "markdown-toc": "^1.2.0",
+    "snazzy": "^9.0.0",
+    "standard": "^16.0.1",
+    "standard-version": "^9.0.0",
+    "tap": "^14.10.8"
+  },
+  "dependencies": {
+    "@dnlup/doc": "^3.1.0",
+    "fastify-plugin": "^3.0.0"
+  }
+}

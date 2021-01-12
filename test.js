@@ -1,0 +1,34 @@
+'use strict'
+
+const { test } = require('tap')
+const Fastify = require('fastify')
+const { Sampler } = require('@dnlup/doc')
+const plugin = require('.')
+
+test('invalid options', t => {
+  const fastify = Fastify()
+  return t.rejects(fastify.register(plugin.register, {
+    sampleInterval: -1
+  }), new RangeError('sampleInterval must be > 1, received -1'))
+})
+
+test('valid options', t => {
+  const fastify = Fastify()
+  return t.resolves(fastify.register(plugin.register))
+})
+
+test('metrics decorator', async t => {
+  const fastify = Fastify()
+  fastify.register(plugin.register, {
+    sampleInterval: 100,
+    unref: false
+  })
+  await fastify.ready()
+  t.true(fastify.metrics instanceof Sampler)
+  await new Promise((resolve) => {
+    fastify.metrics.once('sample', () => {
+      resolve()
+    })
+  })
+  await fastify.close()
+})
