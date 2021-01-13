@@ -21,11 +21,14 @@ documentation for more details.
 
 - [Install](#install)
 - [Usage](#usage)
-  * [Register in the same context](#register-in-the-same-context)
-  * [Register in an encapsulated context](#register-in-an-encapsulated-context)
+  * [Example 1](#example-1)
+  * [Example 2](#example-2)
   * [Plugin options](#plugin-options)
 - [Decorators](#decorators)
   * [`metrics`](#metrics)
+  * [`eventLoopUtilizationSupported`](#eventlooputilizationsupported)
+  * [`resourceUsageSupported`](#resourceusagesupported)
+  * [`gcFlagsSupported`](#gcflagssupported)
 - [Hooks](#hooks)
   * [`onClose`](#onclose)
 - [License](#license)
@@ -40,19 +43,21 @@ npm i @dnlup/fastify-doc
 
 ## Usage
 
-### Register in the same context
-
-> Uses [fastify-plugin](https://github.com/fastify/fastify-plugin) and it's the most common registration method.
+### Example 1
 
 ```js
 const fastify = require('fastify')()
-const plugin = require('@dnlup/fastify-doc')
+const metrics = require('@dnlup/fastify-doc')
 
-fastify.register(plugin.register)
+fastify.register(metrics)
 
-fastify.metrics.on('sample', () => {
-  // sendCpuUsage(fastify.metrics.cpu.usage)
-  // ...send other metrics as well
+fastify.register(function myReporter (instance, opts, next) {
+  instance.metrics.on('sample', () => {
+    // sendCpuUsage(instance.metrics.cpu.usage)
+    // ...send other metrics as well
+  })
+
+  next()
 })
 
 fastify.get('/', (request, reply) => {
@@ -62,23 +67,19 @@ fastify.get('/', (request, reply) => {
 fastify.listen(3000)
 ```
 
-### Register in an encapsulated context
-
-> If you don't want to expose this plugin to the outer context.
+### Example 2
 
 ```js
 const fastify = require('fastify')()
-const { plugin } = require('@dnlup/fastify-doc')
+const metrics = require('@dnlup/fastify-doc')
 
-fastify.register(function myCustomPlugin (instance, opts, done) {
-  const myOpts = {}
-  instance.register(plugin, myOpts)
-  // ...my custom logic
+fastify.register(async function myReporter (instance, opts) {
+  await instance.register(metrics)
+
   instance.metrics.on('sample', () => {
-    // sendCpuUsage(fastify.metrics.cpu.usage)
+    // sendCpuUsage(instance.metrics.cpu.usage)
     // ...send other metrics as well
   })
-  done()
 })
 
 fastify.get('/', (request, reply) => {
@@ -113,6 +114,24 @@ The options are the same of [`@dnlup/doc`](https://github.com/dnlup/doc#docoptio
 * [`<Sampler>`](https://github.com/dnlup/doc#class-docsampler)
 
 A `Sampler` instance.
+
+### `eventLoopUtilizationSupported`
+
+* `<boolean>`
+
+Whether the Node.js version in use supports the [eventLoopUtilization metric](https://nodejs.org/dist/latest-v14.x/docs/api/perf_hooks.html#perf_hooks_performance_eventlooputilization_utilization1_utilization2).
+
+### `resourceUsageSupported`
+
+* `<boolean>`
+
+Whether the Node.js version in use supports the [resourceUsage metric](https://nodejs.org/dist/latest-v14.x/docs/api/process.html#process_process_resourceusage).
+
+### `gcFlagsSupported`
+
+* `<boolean>`
+
+Whether the Node.js version in use supports [GC flags](https://nodejs.org/dist/latest-v14.x/docs/api/perf_hooks.html#perf_hooks_performanceentry_flags).
 
 ## Hooks
 

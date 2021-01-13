@@ -7,28 +7,35 @@ const plugin = require('.')
 
 test('invalid options', t => {
   const fastify = Fastify()
-  return t.rejects(fastify.register(plugin.register, {
+  return t.rejects(fastify.register(plugin, {
     sampleInterval: -1
   }), new RangeError('sampleInterval must be > 1, received -1'))
 })
 
 test('valid options', t => {
   const fastify = Fastify()
-  return t.resolves(fastify.register(plugin.register))
+  return t.resolves(fastify.register(plugin))
 })
 
 test('metrics decorator', async t => {
   const fastify = Fastify()
-  fastify.register(plugin.register, {
+  fastify.register(plugin, {
     sampleInterval: 100,
     unref: false
   })
   await fastify.ready()
+
   t.true(fastify.metrics instanceof Sampler)
+
   await new Promise((resolve) => {
     fastify.metrics.once('sample', () => {
       resolve()
     })
   })
+
+  t.true(typeof fastify.eventLoopUtilizationSupported === 'boolean')
+  t.true(typeof fastify.resourceUsageSupported === 'boolean')
+  t.true(typeof fastify.gcFlagsSupported === 'boolean')
+
   await fastify.close()
 })
