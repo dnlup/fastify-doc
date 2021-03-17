@@ -97,15 +97,20 @@ The options are the same of [`@dnlup/doc`](https://github.com/dnlup/doc#docoptio
   * `sampleInterval` `<number>`: sample interval (ms) to get a sample. On each `sampleInterval` ms a [`sample`](#event-sample) event is emitted. **Default:** `500` on Node < 11.10.0, `1000` otherwise. Under the hood the package uses [`monitorEventLoopDelay`](https://nodejs.org/docs/latest-v12.x/api/perf_hooks.html#perf_hooks_perf_hooks_monitoreventloopdelay_options) when available to track the event loop delay and this allows to increase the default `sampleInterval`.
   * `autoStart` `<boolean>`: start automatically to collect metrics. **Default:** `true`.
   * `unref` `<boolean>`: [unref](https://nodejs.org/dist/latest-v12.x/docs/api/timers.html#timers_timeout_unref) the timer used to schedule the sampling interval. **Default:** `true`.
-  * `eventLoopOptions` `<Object>`: Options to setup [`monitorEventLoopDelay`](https://nodejs.org/docs/latest-v12.x/api/perf_hooks.html#perf_hooks_perf_hooks_monitoreventloopdelay_options). **Default:** `{ resolution: 10 }`
+  * `gcOptions` `<Object>`: Garbage collection options
+    * `aggregate` `<boolean>`: Track and aggregate statistics about each garbage collection operation (see https://nodejs.org/docs/latest-v12.x/api/perf_hooks.html#perf_hooks_performanceentry_kind). **Default:** `false`
+    * `flags` `<boolean>`: , Track statistics about the flags of each (aggregated) garbage collection operation (see https://nodejs.org/docs/latest-v12.x/api/perf_hooks.html#perf_hooks_performanceentry_flags). `aggregate` has to be `true` to enable this option. **Default:** `true` on Node version `12.17.0` and newer.
+  * `eventLoopDelayOptions` `<Object>`: Options to setup [`monitorEventLoopDelay`](https://nodejs.org/docs/latest-v12.x/api/perf_hooks.html#perf_hooks_perf_hooks_monitoreventloopdelay_options). **Default:** `{ resolution: 10 }`
   * `collect` `<Object>`: enable/disable the collection of specific metrics.
     * `cpu` `<boolean>`: enable cpu metric. **Default:** `true`.
     * `resourceUsage` `<boolean>`: enable [resourceUsage](https://nodejs.org/docs/latest-v12.x/api/process.html#process_process_resourceusage) metric. **Default:** `false`.
     * `eventLoopDelay` `<boolean>`: enable eventLoopDelay metric. **Default:** `true`.
-    * `eventLoopUtilization` `<boolean>`: enable [eventLoopUtilization](https://nodejs.org/docs/latest-v14.x/api/perf_hooks.html#perf_hooks_performance_eventlooputilization_utilization1_utilization2) metric. **Default:** `true` on Node versions that support it.
+    * `eventLoopUtilization` `<boolean>`: enable [eventLoopUtilization](https://nodejs.org/docs/latest-v12.x/api/perf_hooks.html#perf_hooks_performance_eventlooputilization_utilization1_utilization2) metric. **Default:** `true` on Node version `12.19.0` and newer.
     * `memory` `<boolean>`: enable memory metric. **Default:** `true`.
     * `gc` `<boolean>`: enable garbage collection metric. **Default:** `false`.
     * `activeHandles` `<boolean>`: enable active handles collection metric. **Default:** `false`.
+
+If `options.collect.resourceUsage` is set to `true`, `options.collect.cpu` will be set to false because the cpu metric is already available in the [`resource usage metric`](#samplerresourceusage).
 
 ## Decorators
 
