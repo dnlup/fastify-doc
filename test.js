@@ -2,14 +2,14 @@
 
 const { test } = require('tap')
 const Fastify = require('fastify')
-const { Sampler } = require('@dnlup/doc')
+const { Sampler, errors } = require('@dnlup/doc')
 const plugin = require('.')
 
 test('invalid options', t => {
   const fastify = Fastify()
   return t.rejects(fastify.register(plugin, {
     sampleInterval: -1
-  }), new RangeError('sampleInterval must be > 1, received -1'))
+  }), new errors.InvalidArgumentError('sampleInterval must be > 1, received -1'))
 })
 
 test('valid options', t => {
