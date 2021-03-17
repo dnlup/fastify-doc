@@ -64,7 +64,7 @@
     "tap": "^14.10.8"
   },
   "dependencies": {
-    "@dnlup/doc": "^3.1.0",
+    "@dnlup/doc": "^4.0.0",
     "fastify-plugin": "^3.0.0"
   }
 }
