@@ -25,7 +25,7 @@ test('metrics decorator', async t => {
   })
   await fastify.ready()
 
-  t.true(fastify.metrics instanceof Sampler)
+  t.ok(fastify.metrics instanceof Sampler)
 
   await new Promise((resolve) => {
     fastify.metrics.once('sample', () => {
@@ -33,9 +33,9 @@ test('metrics decorator', async t => {
     })
   })
 
-  t.true(typeof fastify.eventLoopUtilizationSupported === 'boolean')
-  t.true(typeof fastify.resourceUsageSupported === 'boolean')
-  t.true(typeof fastify.gcFlagsSupported === 'boolean')
+  t.ok(typeof fastify.eventLoopUtilizationSupported === 'boolean')
+  t.ok(typeof fastify.resourceUsageSupported === 'boolean')
+  t.ok(typeof fastify.gcFlagsSupported === 'boolean')
 
   await fastify.close()
 })
