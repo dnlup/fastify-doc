@@ -54,7 +54,7 @@
   },
   "homepage": "https://github.com/dnlup/fastify-doc#readme",
   "devDependencies": {
-    "fastify": "^3.8.0",
+    "fastify": "^4.13.0",
     "husky": "^6.0.0",
     "lint-staged": "^11.0.0",
     "markdown-toc": "^1.2.0",
